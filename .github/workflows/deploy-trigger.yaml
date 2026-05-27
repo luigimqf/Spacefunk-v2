@@ -1,0 +1,29 @@
+name: Deploy WorkFlow Trigger
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  tigger-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    # - name: Git Config
+    #   uses: stefanzweifel/git-auto-commit-action@v4
+    #   with:
+    #     commit_user_name: Daniel Castro
+    #     commit_user_email: contatodanielcastro@gmail.com
+    #     commit_message: 'Automated commit'
+
+    - name: Trigger Deploy Action
+      run: |
+        curl -f -X POST \
+          -H "Authorization: token ${{ secrets.CI_K8S_CITADEL }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/dancastroofc/k3s-citadel/actions/workflows/spacefunk-ci.yml/dispatches \
+          -d '{"ref": "main"}'
