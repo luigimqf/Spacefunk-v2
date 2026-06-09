@@ -1,14 +1,34 @@
-FROM node:20
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install
+# Build
+FROM node:22-alpine AS builder
+
+ENV CI=true
+
+# Dependências
+RUN apk add --no-cache python3 make g++
+
+WORKDIR /app
+RUN npm install -g pnpm
+
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml* ./
+RUN pnpm install
+
 COPY . .
+RUN pnpm build
 
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends ffmpeg \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
+# Imagem final
+FROM node:22-alpine
 
-RUN apt-get autoremove -y
+RUN apk add --no-cache ffmpeg
 
-CMD [ "node", "src/main.js" ]
+WORKDIR /app
+RUN npm install -g pnpm 
+
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/pnpm-workspace.yaml ./
+COPY --from=builder /app/pnpm-lock.yaml* ./
+COPY --from=builder /app/dist ./dist
+
+RUN pnpm install --prod
+
+# Usa o script "start" do package.json
+CMD ["pnpm", "start"]
