@@ -5,14 +5,14 @@ import type { Command } from "../types/index.js";
 export default {
   data: new SlashCommandBuilder()
     .setName("skip")
-    .setDescription("Skip the currently playing track."),
+    .setDescription("Pula a música que está tocando."),
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const queue = useQueue(interaction.guild!);
 
     if (!queue || !queue.isPlaying()) {
       await interaction.reply({
-        content: "❌ Nothing is playing right now.",
+        content: "❌ Nenhuma música tocando no momento.",
         ephemeral: true,
       });
       return;
@@ -23,11 +23,11 @@ export default {
 
     const next = queue.tracks.at(0);
     const nextInfo = next
-      ? `\nUp next: **${next.title}**`
-      : "\nThe queue is now empty.";
+      ? `\nPróxima: **${next.title}**`
+      : "\nA fila está vazia agora.";
 
     await interaction.reply(
-      `⏭️ Skipped **${current?.title ?? "current track"}**.${nextInfo}`,
+      `⏭️ Pulou **${current?.title ?? "música atual"}**.${nextInfo}`,
     );
   },
 } satisfies Command;

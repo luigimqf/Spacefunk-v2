@@ -23,20 +23,20 @@ export function buildQueueMessage(queue: GuildQueue, page: number) {
     .setColor(0x5865f2)
     .setDescription(
       [
-        `**Now playing:**\n▶️ [${current?.title ?? "Unknown"}](${current?.url}) — \`${current?.duration ?? "??"}\``,
+        `**Tocando agora:**\n▶️ [${current?.title ?? "Desconhecido"}](${current?.url}) — \`${current?.duration ?? "??"}\``,
         "",
         slice.length > 0
-          ? `**Up next:**\n${slice
+          ? `**A seguir:**\n${slice
               .map(
                 (t, i) =>
                   `\`${safePage * PAGE_SIZE + i + 1}.\` [${t.title}](${t.url}) — \`${t.duration}\``,
               )
               .join("\n")}`
-          : "*No more tracks in queue.*",
+          : "*Não há mais faixas na fila.*",
       ].join("\n"),
     )
     .setFooter({
-      text: `Page ${safePage + 1} / ${totalPages} · ${tracks.length} track${tracks.length !== 1 ? "s" : ""} in queue`,
+      text: `Página ${safePage + 1} / ${totalPages} · ${tracks.length} faixa${tracks.length !== 1 ? "s" : ""} na fila`,
     });
 
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
@@ -66,11 +66,11 @@ export function buildQueueMessage(queue: GuildQueue, page: number) {
 export default {
   data: new SlashCommandBuilder()
     .setName("queue")
-    .setDescription("Show the current song queue.")
+    .setDescription("Mostra a fila de músicas atual.")
     .addIntegerOption((option) =>
       option
         .setName("page")
-        .setDescription("Page number (default: 1)")
+        .setDescription("Número da página (padrão: 1)")
         .setMinValue(1),
     ),
 
@@ -79,7 +79,7 @@ export default {
 
     if (!queue || !queue.isPlaying()) {
       await interaction.reply({
-        content: "❌ Nothing is playing right now.",
+        content: "❌ Nenhuma música tocando no momento.",
         ephemeral: true,
       });
       return;
@@ -91,7 +91,7 @@ export default {
 
     if (page >= totalPages) {
       await interaction.reply({
-        content: `❌ Page ${page + 1} does not exist. There are only ${totalPages} page(s).`,
+        content: `❌ A página ${page + 1} não existe. Há apenas ${totalPages} página(s).`,
         ephemeral: true,
       });
       return;

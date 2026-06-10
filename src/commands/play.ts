@@ -10,11 +10,11 @@ import type { Command } from "../types/index.js";
 export default {
   data: new SlashCommandBuilder()
     .setName("play")
-    .setDescription("Play a song from YouTube, Spotify or SoundCloud.")
+    .setDescription("Toca uma música do YouTube, Spotify ou SoundCloud.")
     .addStringOption((option) =>
       option
         .setName("query")
-        .setDescription("Song name, URL (YouTube / Spotify / SoundCloud)")
+        .setDescription("Nome da música ou URL (YouTube / Spotify / SoundCloud)")
         .setRequired(true),
     ),
 
@@ -26,7 +26,7 @@ export default {
 
     if (!voiceChannel) {
       await interaction.editReply(
-        "🔇 You need to be in a voice channel first!",
+        "🔇 Você precisa estar em um canal de voz primeiro!",
       );
       return;
     }
@@ -39,7 +39,7 @@ export default {
     });
 
     if (!result.hasTracks()) {
-      await interaction.editReply(`❌ No results found for **${query}**.`);
+      await interaction.editReply(`❌ Nenhum resultado encontrado para **${query}**.`);
       return;
     }
 
@@ -60,11 +60,11 @@ export default {
 
     if (isPlaylist) {
       await interaction.editReply(
-        `🎶 Queued playlist **${searchResult.playlist!.title}** — ${searchResult.tracks.length} tracks`,
+        `🎶 Playlist **${searchResult.playlist!.title}** adicionada — ${searchResult.tracks.length} faixas`,
       );
     } else {
       await interaction.editReply(
-        `🎵 Queued **${track.title}** — \`${track.duration}\``,
+        `🎵 **${track.title}** adicionado à fila — \`${track.duration}\``,
       );
     }
   },

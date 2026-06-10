@@ -5,17 +5,17 @@ import type { Command } from "../types/index.js";
 export default {
   data: new SlashCommandBuilder()
     .setName("remove")
-    .setDescription("Remove a track from the queue by position or name.")
+    .setDescription("Remove uma faixa da fila pela posição ou nome.")
     .addIntegerOption((option) =>
       option
         .setName("position")
-        .setDescription("Position in the queue (1-based)")
+        .setDescription("Posição na fila (começa em 1)")
         .setMinValue(1),
     )
     .addStringOption((option) =>
       option
         .setName("name")
-        .setDescription("Track name to search for (case-insensitive)"),
+        .setDescription("Nome da faixa (sem distinção de maiúsculas)"),
     ),
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
@@ -23,7 +23,7 @@ export default {
 
     if (!queue || !queue.isPlaying()) {
       await interaction.reply({
-        content: "❌ Nothing is playing right now.",
+        content: "❌ Nenhuma música tocando no momento.",
         ephemeral: true,
       });
       return;
@@ -34,7 +34,7 @@ export default {
 
     if (position === null && name === null) {
       await interaction.reply({
-        content: "❌ Please specify either a `position` or a `name`.",
+        content: "❌ Informe uma `position` ou um `name`.",
         ephemeral: true,
       });
       return;
@@ -44,7 +44,7 @@ export default {
 
     if (tracks.length === 0) {
       await interaction.reply({
-        content: "❌ The queue is empty.",
+        content: "❌ A fila está vazia.",
         ephemeral: true,
       });
       return;
@@ -56,7 +56,7 @@ export default {
       index = position - 1;
       if (index >= tracks.length) {
         await interaction.reply({
-          content: `❌ Position \`${position}\` is out of range. Queue has \`${tracks.length}\` track(s).`,
+          content: `❌ Posição \`${position}\` fora do intervalo. A fila tem \`${tracks.length}\` faixa(s).`,
           ephemeral: true,
         });
         return;
@@ -66,7 +66,7 @@ export default {
       index = tracks.findIndex((t) => t.title.toLowerCase().includes(lowerName));
       if (index === -1) {
         await interaction.reply({
-          content: `❌ No track matching **${name}** found in the queue.`,
+          content: `❌ Nenhuma faixa com o nome **${name}** encontrada na fila.`,
           ephemeral: true,
         });
         return;
@@ -77,7 +77,7 @@ export default {
     queue.removeTrack(index);
 
     await interaction.reply(
-      `🗑️ Removed **${track.title}** from position \`${index + 1}\`.`,
+      `🗑️ **${track.title}** removido da posição \`${index + 1}\`.`,
     );
   },
 } satisfies Command;

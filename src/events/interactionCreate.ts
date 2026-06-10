@@ -14,7 +14,7 @@ export default async function interactionCreate(
     if (!command) {
       console.warn(`[Commands] Unknown command: ${interaction.commandName}`);
       await interaction.reply({
-        content: "❌ Unknown command.",
+        content: "❌ Comando desconhecido.",
         ephemeral: true,
       });
       return;
@@ -28,7 +28,7 @@ export default async function interactionCreate(
         error,
       );
       const message = {
-        content: "❌ An error occurred while executing this command.",
+        content: "❌ Ocorreu um erro ao executar este comando.",
         ephemeral: true,
       };
       if (interaction.replied || interaction.deferred) {
@@ -53,7 +53,7 @@ export default async function interactionCreate(
 
         if (!queue || !queue.isPlaying()) {
           await interaction.update({
-            content: "❌ Nothing is playing right now.",
+            content: "❌ Nenhuma música tocando no momento.",
             embeds: [],
             components: [],
           });
@@ -68,7 +68,7 @@ export default async function interactionCreate(
       if (action === "skip") {
         if (!queue || !queue.isPlaying()) {
           await interaction.update({
-            content: "❌ Nothing is playing right now.",
+            content: "❌ Nenhuma música tocando no momento.",
             embeds: [],
             components: [],
           });
@@ -81,7 +81,7 @@ export default async function interactionCreate(
         const freshQueue = useQueue(interaction.guild!);
         if (!freshQueue || !freshQueue.isPlaying()) {
           await interaction.update({
-            content: `⏭️ Skipped **${skipped?.title ?? "current track"}**. Queue is now empty.`,
+            content: `⏭️ Pulou **${skipped?.title ?? "música atual"}**. A fila está vazia agora.`,
             embeds: [],
             components: [],
           });
@@ -97,7 +97,7 @@ export default async function interactionCreate(
         if (queue) queue.delete();
 
         await interaction.update({
-          content: "🗑️ Queue cleared and playback stopped.",
+          content: "🗑️ Fila limpa e reprodução parada.",
           embeds: [],
           components: [],
         });
@@ -106,7 +106,7 @@ export default async function interactionCreate(
     } catch (error) {
       console.error(`[Buttons] Error handling queue button "${action}":`, error);
       await interaction.reply({
-        content: "❌ An error occurred while processing that action.",
+        content: "❌ Ocorreu um erro ao processar essa ação.",
         ephemeral: true,
       });
     }

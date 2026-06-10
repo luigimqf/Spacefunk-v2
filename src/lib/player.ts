@@ -43,22 +43,22 @@ export async function createPlayer(client: Client): Promise<Player> {
 
   player.events.on("playerStart", (queue, track) => {
     queue.metadata?.channel?.send(
-      `▶️ Now playing: **${track.title}** — \`${track.duration}\``,
+      `▶️ Tocando agora: **${track.title}** — \`${track.duration}\``,
     );
   });
 
   player.events.on("disconnect", (queue) => {
-    queue.metadata?.channel?.send("👋 Disconnected from the voice channel.");
+    queue.metadata?.channel?.send("👋 Desconectado do canal de voz.");
   });
 
   player.events.on("emptyQueue", (queue) => {
     queue.metadata?.channel?.send(
-      "✅ Queue finished! Add more songs with `/play`.",
+      "✅ Fila finalizada! Adicione mais músicas com `/play`.",
     );
   });
 
   player.events.on("emptyChannel", (queue) => {
-    queue.metadata?.channel?.send("👀 Voice channel is empty — leaving.");
+    queue.metadata?.channel?.send("👀 Canal de voz vazio — saindo.");
   });
 
   playerInstance = player;

@@ -9,14 +9,14 @@ import type { Command } from "../types/index.js";
 export default {
   data: new SlashCommandBuilder()
     .setName("clear")
-    .setDescription("Clear the queue and stop playback."),
+    .setDescription("Limpa a fila e para a reprodução."),
 
   async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const member = interaction.member as GuildMember;
 
     if (!member.voice.channel) {
       await interaction.reply({
-        content: "🔇 You need to be in a voice channel to use this.",
+        content: "🔇 Você precisa estar em um canal de voz para usar isso.",
         ephemeral: true,
       });
       return;
@@ -26,7 +26,7 @@ export default {
 
     if (!queue) {
       await interaction.reply({
-        content: "❌ Nothing is playing right now.",
+        content: "❌ Nenhuma música tocando no momento.",
         ephemeral: true,
       });
       return;
@@ -34,6 +34,6 @@ export default {
 
     queue.delete();
 
-    await interaction.reply("🗑️ Queue cleared and playback stopped.");
+    await interaction.reply("🗑️ Fila limpa e reprodução parada.");
   },
 } satisfies Command;
