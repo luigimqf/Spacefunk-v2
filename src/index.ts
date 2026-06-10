@@ -10,6 +10,8 @@ import playCommand from "./commands/play.js";
 import skipCommand from "./commands/skip.js";
 import queueCommand from "./commands/queue.js";
 import clearCommand from "./commands/clear.js";
+import removeCommand from "./commands/remove.js";
+import moveCommand from "./commands/move.js";
 
 // ── Client setup ──────────────────────────────────────────────────────────────
 const client = new Client({
@@ -28,6 +30,8 @@ const commands: Command[] = [
   skipCommand,
   queueCommand,
   clearCommand,
+  removeCommand,
+  moveCommand,
 ];
 for (const command of commands) {
   client.commands.set(command.data.name, command);

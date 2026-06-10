@@ -14,6 +14,8 @@ import playCommand from "./commands/play.js";
 import skipCommand from "./commands/skip.js";
 import queueCommand from "./commands/queue.js";
 import clearCommand from "./commands/clear.js";
+import removeCommand from "./commands/remove.js";
+import moveCommand from "./commands/move.js";
 
 const token = process.env.DISCORD_TOKEN;
 const clientId = process.env.DISCORD_CLIENT_ID;
@@ -27,6 +29,8 @@ const commands: RESTPostAPIChatInputApplicationCommandsJSONBody[] = [
   skipCommand.data.toJSON(),
   queueCommand.data.toJSON(),
   clearCommand.data.toJSON(),
+  removeCommand.data.toJSON(),
+  moveCommand.data.toJSON(),
 ];
 
 const rest = new REST({ version: "10" }).setToken(token);
