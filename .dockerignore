@@ -1,0 +1,30 @@
+# Dependências
+node_modules/
+.pnpm-store/
+
+# Build e Output
+dist/
+*.tsbuildinfo
+.typescript-compile-cache/
+
+# Configurações e Segredos
+.env
+.env.*
+!.env.example
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Git
+.git/
+.gitignore
+
+# Logs
+*.log
+pnpm-debug.log*
+
+# IDEs e OS
+.vscode/
+.idea/
+.DS_Store
