@@ -1,5 +1,6 @@
 import { Player } from "discord-player";
 import { DefaultExtractors, SpotifyExtractor } from "@discord-player/extractor";
+import { YoutubeiExtractor } from "discord-player-youtubei";
 import { Client } from "discord.js";
 
 let playerInstance: Player | null = null;
@@ -20,8 +21,17 @@ export async function createPlayer(client: Client): Promise<Player> {
     );
   }
 
-  // loadMulti registers all DefaultExtractors (SoundCloud, Spotify, Attachment, etc.)
-  // YouTube is handled natively by discord-player itself
+  // YoutubeiExtractor (priority=2) must be registered first so text searches
+  // go to YouTube instead of being claimed by Apple Music / SoundCloud.
+  // useYoutubeDL: streaming via inertube (youtubei.js) quebra com frequência
+  // por causa de PO tokens e mudanças anti-bot do YouTube; yt-dlp é atualizado
+  // com muito mais frequência para contornar isso, então usamos ele só para
+  // extrair o stream de áudio (busca/metadados continuam via youtubei.js).
+  await player.extractors.register(YoutubeiExtractor, {
+    useYoutubeDL: true,
+  });
+
+  // DefaultExtractors: SoundCloud, Spotify, Apple Music, Attachment, etc.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   await player.extractors.loadMulti(DefaultExtractors, {
     [SpotifyExtractor.identifier]: {

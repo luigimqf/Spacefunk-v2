@@ -11,7 +11,7 @@ WORKDIR /app
 # Ativa o corepack para gerenciar o pnpm de forma nativa e rápida
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-COPY pnpm-workspace.yaml package.json pnpm-lock.yaml* ./
+COPY package.json pnpm-lock.yaml* .npmrc ./
 RUN pnpm install --frozen-lockfile
 
 COPY . .
@@ -20,7 +20,7 @@ RUN pnpm build
 # Imagem final
 FROM node:22-alpine
 
-RUN apk add --no-cache ffmpeg
+RUN apk add --no-cache ffmpeg python3
 
 WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -28,6 +28,7 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 COPY --from=builder /app/package.json ./
 COPY --from=builder /app/pnpm-workspace.yaml ./
 COPY --from=builder /app/pnpm-lock.yaml* ./
+COPY --from=builder /app/.npmrc ./
 COPY --from=builder /app/dist ./dist
 
 RUN pnpm install --prod --frozen-lockfile
