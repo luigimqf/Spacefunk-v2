@@ -89,11 +89,17 @@ export default {
               channel: interaction.channel as TextChannel,
             },
             selfDeaf: true,
-            volume: 80,
+            bufferingTimeout: 3000,
+            disableVolume: true,
+            disableEqualizer: true,
+            disableFilterer: true,
+            disableBiquad: true,
+            disableResampler: true,
             leaveOnEmpty: true,
             leaveOnEmptyCooldown: 30_000,
             leaveOnEnd: false,
           },
+
         });
 
         const queue = useQueue(interaction.guild!.id);
@@ -132,7 +138,12 @@ export default {
           channel: interaction.channel as TextChannel,
         },
         selfDeaf: true,
-        volume: 80,
+        bufferingTimeout: 3000,
+        disableVolume: true,
+        disableEqualizer: true,
+        disableFilterer: true,
+        disableBiquad: true,
+        disableResampler: true,
         leaveOnEmpty: true,
         leaveOnEmptyCooldown: 30_000,
         leaveOnEnd: false,
